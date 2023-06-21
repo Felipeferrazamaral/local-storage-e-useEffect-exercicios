@@ -8,26 +8,38 @@ function App() {
   const [valorDoInput, setValorDoInput] = useState("");
   const [filtro, setFiltro] = useState("")
 
-  // useEffect() => {
-  //   () => {
-
-  //   },
-  //   []
-  // };
-
-  // useEffect() => {
-  //   () => {
-
-  //   },
-  //   []
-  // };
+  const setLocalStorage = () => {
+    localStorage.setItem("tarefas", JSON.stringify(tarefas))
+  }
+// salva as tarefas no local storage quando uma nova tarefa for criada
+  useEffect(() => {
+    if (tarefas.length) {
+      setLocalStorage()
+    }
+  },[tarefas])
+// pega as tarefas salvas no local storage
+  useEffect(() => {
+    const listaLocalStorage = JSON.parse(localStorage.getItem("tarefas"))
+    if (listaLocalStorage) {
+      setTarefas(listaLocalStorage)
+    }
+  },[])
+   
 
   const pegarValorDoInput = (event) => {
-    console.log("aaa");
+    setValorDoInput(event.target.value)
   }
 
   const criarTarefa = () => {
-    console.log("aaa");
+    const novaTarefa = {
+      id: Date.now(),
+      texto: valorDoInput,
+      completa: false
+    };
+    const CopiaDoEstado = [...tarefas, novaTarefa];
+    if (valorDoInput.trim() !== "")
+    setTarefas(CopiaDoEstado);
+    setValorDoInput("");
   }
 
   const selecionarTarefa = (id) => {
@@ -35,7 +47,7 @@ function App() {
   }
 
   const pegarValorDoSelect = (event) => {
-    console.log("aaa");
+    setFiltro(event.target.value)
   }
 
 
